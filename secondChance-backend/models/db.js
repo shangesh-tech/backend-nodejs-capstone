@@ -19,6 +19,7 @@ async function connectToDatabase() {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
+    
         console.log('Successfully connected to MongoDB');
 
         // Task 2: Connect to the database and store in dbInstance
@@ -30,6 +31,7 @@ async function connectToDatabase() {
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         throw err;  // Let the error bubble up for proper error handling in the app
+        
     }
 }
 

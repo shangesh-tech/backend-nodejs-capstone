@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const pinoLogger = require('./logger');
+const path = require('path');
 
 const connectToDatabase = require('./models/db');
 const {loadData} = require("./util/import-mongo/index");
@@ -22,32 +23,19 @@ connectToDatabase().then(() => {
 app.use(express.json());
 
 // Route files
-
-// authRoutes Step 2: import the authRoutes and store in a constant called authRoutes
-//{{insert code here}}
-
-// Items API Task 1: import the secondChanceItemsRoutes and store in a constant called secondChanceItemsRoutes
-//{{insert code here}}
-
-// Search API Task 1: import the searchRoutes and store in a constant called searchRoutes
-//{{insert code here}}
-
-
+const secondChanceRoutes = require('./routes/secondChanceItemsRoutes');
+const authRoutes = require('./routes/authRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 const pinoHttp = require('pino-http');
 const logger = require('./logger');
 
 app.use(pinoHttp({ logger }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Use Routes
-// authRoutes Step 2: add the authRoutes and to the server by using the app.use() method.
-//{{insert code here}}
-
-// Items API Task 2: add the secondChanceItemsRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
-//{{insert code here}}
-
+app.use('/api/secondchance/items', secondChanceRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/secondchance/search', searchRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
